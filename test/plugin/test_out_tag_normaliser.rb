@@ -8,7 +8,7 @@ class TagNormaliserOutputTest < Test::Unit::TestCase
 
   test "simple_test" do
     config = %[
-      format cluster.${namespace_name2}.${pod_name}.${labels.app}
+      format cluster.${namespace_name}.${pod_name}.${labels.app}
     ]
     record = {
         "log" => "Example",
