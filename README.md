@@ -28,12 +28,12 @@ $ bundle
 
 ## Configuration
 
-The configuration builds from `<route>` sections.
+You only need to specify the `format` option.
 
 ```
 <match example.tag**>
   @type tag_normaliser
-  format cluster1.${namespace_name}.${pod_name}.${}
+  format cluster1.${namespace_name}.${pod_name}.${labels.app}
 </match>
 ```
 
