@@ -53,7 +53,7 @@ You only need to specify the `format` option.
 | pod_id | Kubernetes UUID for Pod | 1f50d309-45a6-11e9-b795-025000000001  |
 | labels | Kubernetes Pod labels. This is a nested map. You can access nested attributes via `.`  | {"app":"nginx-logging-demo", "pod-template-hash":"7dcdcfdcd7" }  |
 | host | Node hostname the Pod runs on | docker-desktop |
-| docker_id | Docker UUID of the container | 3a38148aa37aa30e6e2df96af95cbda7a47b0428689bb4152413f4be25532fda |
+| docker_id | Docker UUID of the container | 3a38148aa37aa3... |
 
 
 ### Example
