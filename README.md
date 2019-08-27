@@ -1,8 +1,6 @@
 # fluent-plugin-tag-normaliser
 
-[Fluentd](https://fluentd.org/) output plugin to do something.
-
-Tag-normaliser is a `fluentd` plugin to help re-tag logs with Kubernetes metadata. 
+Tag-normaliser is a [fluentd](https://docs.fluentd.org/) plugin to help re-tag logs with Kubernetes metadata coming from `fluent-bit` [kubernetes filter](https://github.com/fluent/fluent-bit-docs/blob/master/filter/kubernetes.md). 
 
 ## Installation
 
