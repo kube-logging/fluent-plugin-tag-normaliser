@@ -20,7 +20,8 @@ class TagNormaliserOutputTest < Test::Unit::TestCase
     }
     d = create_driver(config)
     d.run(default_tag: 'test') do
-      d.feed(event_time, record)
+      d.feed("tag1", event_time, record.dup)
+      d.feed("tag1", event_time, record.dup)
     end
     events = d.events
     puts events
