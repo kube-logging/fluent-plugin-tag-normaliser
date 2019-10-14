@@ -29,16 +29,28 @@ module Fluent
       config_param :key_prefix, :string, :default => "kubernetes"
       desc 'Default fallback value'
       config_param :unknown, :string, :default => "unknown"
-
+      desc "Sticky tags will match only one record from an event stream. The same tag will be treated the same way"
+      config_param :sticky_tags, :bool, default: true
       def configure(conf)
         super
         @key_accessors = get_key_accessors
+        @tag_map = Hash.new { |k, v| k[v] = "" }
       end
 
       def process(tag, es)
+        if @sticky_tags
+          if @tag_map.has_key?(tag)
+            router.emit_stream(@tag_map[tag], es)
+            return
+          end
+        end
+        new_tag = ""
         es.each do |time, record|
           new_tag = render_tag(record)
           router.emit(new_tag, time, record)
+        end
+        if @sticky_tags
+          @tag_map[tag] = new_tag
         end
       end
 
