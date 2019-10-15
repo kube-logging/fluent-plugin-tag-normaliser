@@ -39,7 +39,8 @@ You only need to specify the `format` option.
 |-----------|-------------|---------|
 | key_prefix | Prefix used to access record attributes | kubernetes |
 | format | Format to rewrite tag to. You can access record with `${record_name}` expression. Nested attributes available via `.` separator: `${labels.app}` | "" |
-| unknown | Fallback value for missing record attribute | "unknown |
+| unknown | Fallback value for missing record attribute | "unknown" |
+| sticky_tags | Sticky tags will match only one record from an event stream. The same tag will be treated the same way | true |
 
 ### Available fluent-bit provided kubernetes attributes
 
