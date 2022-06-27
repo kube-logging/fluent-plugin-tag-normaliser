@@ -37,6 +37,10 @@ module Fluent
         @tag_map = Hash.new { |k, v| k[v] = "" }
       end
 
+      def multi_workers_ready?
+        true
+      end
+
       def process(tag, es)
         if @sticky_tags
           if @tag_map.has_key?(tag)
