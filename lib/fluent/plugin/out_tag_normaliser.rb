@@ -72,18 +72,65 @@ module Fluent
 
       def get_key_accessors
         key_accessors = {}
-        keywords = @format.scan(/\$\{([\w\.\/\-]+)}/)
+        keywords = @format.scan(/\$\{([\w\.\/\-\\]+)}/)
         keywords.each do |key|
           placeholder = "${#{key[0]}}"
-          if @key_prefix != ""
-            path = @key_prefix + "." + key[0]
+          if contains_escaped_period?(key[0])
+            path = create_path_with_bracket_notation(key[0])
           else
-            path = key[0]
+            path = create_path(key[0])
           end
-          path = "$." + path
           key_accessors[placeholder] = record_accessor_create(path)
         end
         return key_accessors
+      end
+
+      private
+
+      def contains_escaped_period?(key)
+        key.include?('\.')
+      end
+
+      def create_path(key)
+        if @key_prefix != ""
+          path = @key_prefix + "." + key
+        else
+          path = key
+        end
+        path = "$." + path
+      end
+
+      # Produces the output in bracket notation, e.g. $['kubernetes']['labels']['app.tier']"
+      def create_path_with_bracket_notation(key)
+        path = split_by_unescaped_dots(key)
+                .map { |elem| "['#{elem}']" }
+                .join("")
+        if @key_prefix != ""
+          path = "['#{@key_prefix}']" + path
+        end
+        path = "$" + path
+      end
+
+      # Splits the input string by the . character if it is not escaped by \
+      def split_by_unescaped_dots(text)
+        result = []
+        current_part = ""
+        escaped = false
+
+        text.each_char do |char|
+          if char == "\\" && !escaped
+            escaped = true
+          elsif char == "." && !escaped
+            result << current_part
+            current_part = ""
+          else
+            current_part += char
+            escaped = false
+          end
+        end
+
+        result << current_part
+        result
       end
 
     end
